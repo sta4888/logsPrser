@@ -90,7 +90,7 @@ class LogAnalyzer:
 def main():
     args = parse_args()
     analyzer = LogAnalyzer(args.files, args.report)
-    analyzer.process_log()
+    analyzer.process_log(date_filter=args.date)
     analyzer.print_report()
 
 
