@@ -31,7 +31,7 @@ class LogAnalyzer:
         self.stats = defaultdict(lambda: {"count": 0, "total_time": 0.0})
 
         self.report_generators = {
-            "average": self.generate_average_report,  # для легкого добавления новых ключей отчета
+            "average": self.generate_average_report,  # для легкого добавления новых ключей отчета раттерн Стратегия
         }
 
     def process_log(self, date_filter=None):
