@@ -1,7 +1,6 @@
 import argparse
-import csv
 import json
-from collections import defaultdict
+from collections import defaultdict # для предварительного создания ключей
 from typing import Any
 
 
@@ -11,7 +10,7 @@ def parse_args():
     parser.add_argument(
         "--files",
         required=True,
-        nargs="+",  # принимает один или несколько файлов
+        nargs="+",
         help="Пути к лог-файлам"
     )
     parser.add_argument(
@@ -61,21 +60,24 @@ class LogAnalyzer:
         return report
 
     def print_report(self):
-        """Вывод отчета в консоль"""
+        """Вывод отчета в консоль с автоформатированием колонок"""
         if self.report_type == "average":
             report = self.generate_average_report()
-            print(f"{' ' * 3} {'handler':<40} {'total':<10} {'avg_response_time':<20}")
-            print("-" * 3, "-" * 40, "-" * 10, "-" * 20)
-            for num, data in enumerate(report):
-                print(f"{num:<3}  {data[0]:<40} {data[1]:<10} {data[2]:<20.6f}")
 
+            max_url_len = max((len(row[0]) for row in report), default=4)
+            url_col_width = max(max_url_len, len("handler"))
 
+            header = f"{'№':<3} {'handler':<{url_col_width}} {'total':<10} {'avg_response_time':<20}"
+            print(header)
+            print(f"{'-' * 3} {'-' * url_col_width} {'-' * 10} {'-' * 20}")
 
+            for idx, (url, count, avg_time) in enumerate(report):
+                print(f"{idx:<3} {url:<{url_col_width}} {count:<10} {avg_time:<20.6f}")
 
 
 def main():
     args = parse_args()
-    analyzer = LogAnalyzer(args.files, args.report)  # передаём список
+    analyzer = LogAnalyzer(args.files, args.report)
     analyzer.process_log()
     analyzer.print_report()
 
