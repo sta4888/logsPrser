@@ -38,9 +38,9 @@ class LogAnalyzer:
         """Чтение всех лог-файлов и сбор статистики"""
         for file_path in self.file_path:
             with open(file_path, "r", encoding="utf-8") as f:
-                self.reader(f, date_filter)
+                self._reader(f, date_filter)
 
-    def reader(self, f, date_filter=None):
+    def _reader(self, f, date_filter=None):
         for line in f:
             line = line.strip()
             if not line:
